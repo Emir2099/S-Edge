@@ -20,47 +20,22 @@ A parameter-driven, multi-region edge-computing framework that aggregates IoT se
 
 ## Architecture Overview
 <p align="center">
-       <img src="system_architecture.png" alt="System Architecture" width="700"/>
+       <img src="images/system_architecture.png" alt="System Architecture" width="700"/>
 </p>
 <p align="center"><em>Figure: High-level system architecture of S-Edge framework.</em></p>
 
-```
-IoT Sensors (simulated)
-       │
-       ▼
-┌──────────────┐   per-region thread
-│  Edge Device │──────────────────────────────────────┐
-│  (aggregate) │                                      │
-└──────┬───────┘                                      │
-       │ JSON payload                                 │
-       ▼                                              │
-┌──────────────┐  ZLIB / LZMA / BZ2                   │
-│ Compression  │◄── adaptive: try ZLIB, fall back     │
-│   Manager    │     to BZ2 if ratio < 50 %;          │
-└──────┬───────┘     LZMA for high-priority           │
-       │ compressed bytes                             │
-       ▼                                              │
-┌──────────────┐                                      │
-│  Encryption  │  AES-256-GCM                         │
-│   Manager    │  nonce(16B) + tag(16B) + ciphertext  │
-└──────┬───────┘                                      │
-       │ encrypted blob                               │
-       ▼                                              │
-┌──────────────┐  hysteresis-based (threshold × 0.7)  │
-│    Load      │  + 50 % excess redistribution        │
-│  Balancer    │  + simulated 4G / WAN latency        │
-└──────┬───────┘                                      │
-       │                                              │
-       ▼                                              │
-  region_N_cloud_storage/                             │
-       │                                              │
-       ├─► Version Control (SQLite + SHA-256)         │
-       ├─► Smart Cache (LRU + TTL)                    │
-       └─► Circular Replication ──────────────────────┘
-                region_1 → region_2 → region_3 → region_1
-```
+The S-Edge System Architecture illustrating the five interconnected layers from sensor data ingestion to multiregion
+replication, with explicit feedback coupling arrows showing the closed-loop interaction between the Edge Processing
+Node and the Control Plane.
 
-Three edge-device threads generate data simultaneously. Each region has its own cloud-storage and replicated-storage directory. A circular replication ring copies new files from each region to the next.
+---
+
+## Load Balancing & Compression Algorithms
+
+<p align="center">
+       <img src="images/load_balancing_compression_flowchart.png" alt="Load Balancing Compression Flowchart" width="600"/>
+</p>
+<p align="center"><em>Figure: Flowchart showing the decision process for load balancing and compression selection in S-Edge.</em></p>
 
 ---
 
@@ -197,27 +172,19 @@ All scripts are in `benchmark/` and produce publication-ready PNG figures.
 ### Benchmark Visualizations
 
 <p align="center">
-       <img src="benchmark/compression_comparison.png" alt="Compression Comparison" width="500"/>
+  <img src="benchmark/compression_comparison.png" alt="Compression Comparison" width="500"/>
 </p>
 <p align="center"><em>Figure: Compression ratio comparison across ZLIB, LZMA, BZ2.</em></p>
 
 <p align="center">
-       <img src="benchmark/latency_breakdown.png" alt="Pipeline Latency Breakdown" width="500"/>
+  <img src="benchmark/latency_breakdown.png" alt="Pipeline Latency Breakdown" width="500"/>
 </p>
 <p align="center"><em>Figure: Per-stage latency overhead in the data pipeline.</em></p>
-
 <p align="center">
-       <img src="benchmark/load_balancing_comparison.png" alt="Load Balancing Comparison" width="500"/>
+       <img src="benchmark/load_balancing_comparison.png" alt="Load Balancing Algorithm Comparison" width="600"/>
 </p>
-<p align="center"><em>Figure: Load curves for Round-Robin vs S-Edge.</em></p>
-
 <p align="center">
-       <img src="benchmark/load_balancing_compression_flowchart.png" alt="Load Balancing Compression Flowchart" width="500"/>
-</p>
-<p align="center"><em>Figure: Flowchart of load balancing and compression logic.</em></p>
-
-<p align="center">
-       <img src="benchmark/recovery_latency.png" alt="Recovery Latency" width="500"/>
+  <img src="benchmark/recovery_latency.png" alt="Recovery Latency" width="500"/>
 </p>
 <p align="center"><em>Figure: Recovery latency under simulated region failure.</em></p>
 
