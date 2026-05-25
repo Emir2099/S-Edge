@@ -19,6 +19,10 @@ A parameter-driven, multi-region edge-computing framework that aggregates IoT se
 ---
 
 ## Architecture Overview
+<p align="center">
+       <img src="system_architecture.png" alt="System Architecture" width="700"/>
+</p>
+<p align="center"><em>Figure: High-level system architecture of S-Edge framework.</em></p>
 
 ```
 IoT Sensors (simulated)
@@ -189,6 +193,33 @@ All scripts are in `benchmark/` and produce publication-ready PNG figures.
 | `gen_latency_benchmark.py` | `latency_breakdown.png` | Per-stage latency overhead: anomaly detection, compression, encryption |
 | `gen_recovery_benchmark.py` | `recovery_latency.png` | Recovery latency under simulated region failure |
 | `investigate_flaps.py` | Console output | Detailed trace of every oscillation event in S-Edge vs Least-Connections |
+
+### Benchmark Visualizations
+
+<p align="center">
+       <img src="benchmark/compression_comparison.png" alt="Compression Comparison" width="500"/>
+</p>
+<p align="center"><em>Figure: Compression ratio comparison across ZLIB, LZMA, BZ2.</em></p>
+
+<p align="center">
+       <img src="benchmark/latency_breakdown.png" alt="Pipeline Latency Breakdown" width="500"/>
+</p>
+<p align="center"><em>Figure: Per-stage latency overhead in the data pipeline.</em></p>
+
+<p align="center">
+       <img src="benchmark/load_balancing_comparison.png" alt="Load Balancing Comparison" width="500"/>
+</p>
+<p align="center"><em>Figure: Load curves for Round-Robin vs S-Edge.</em></p>
+
+<p align="center">
+       <img src="benchmark/load_balancing_compression_flowchart.png" alt="Load Balancing Compression Flowchart" width="500"/>
+</p>
+<p align="center"><em>Figure: Flowchart of load balancing and compression logic.</em></p>
+
+<p align="center">
+       <img src="benchmark/recovery_latency.png" alt="Recovery Latency" width="500"/>
+</p>
+<p align="center"><em>Figure: Recovery latency under simulated region failure.</em></p>
 
 Run any benchmark:
 
