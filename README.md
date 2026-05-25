@@ -183,6 +183,7 @@ All scripts are in `benchmark/` and produce publication-ready PNG figures.
 <p align="center">
        <img src="benchmark/load_balancing_comparison.png" alt="Load Balancing Algorithm Comparison" width="600"/>
 </p>
+<p align="center"><em>Figure: Comparative analysis of Queue Load Distribution across regions.</em></p>
 <p align="center">
   <img src="benchmark/recovery_latency.png" alt="Recovery Latency" width="500"/>
 </p>
